@@ -12,9 +12,3 @@ def statement_generator(statement, side_decoration, top_bottom_decoration):
     print(top_bottom)
 
     return ""
-
-# Main routine
-
-statement_generator("Welcome to the Lucky Unicorn Game", "|", "=")
-print()
-statement_generator("Congradulations you got a Unicorn", "$", "$")

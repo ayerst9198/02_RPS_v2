@@ -1,8 +1,34 @@
 import random
+# functions go here
 
-# Functions go here
+
+# makes statements look good
+def statement_generator(statement, side_decoration, top_bottom_decoration):
+
+    sides = side_decoration * 3
+
+    statement = "{} {} {}".format(sides, statement, sides)
+
+    top_bottom = top_bottom_decoration * len(statement)
 
 
+    print(top_bottom)
+    print(statement)
+    print(top_bottom)
+
+    return ""
+
+
+#  simplifies instructions
+def instructions():
+    statement_generator("How to play", "|", "?")
+    print()
+    print("The rules go here")
+    print()
+    return ""
+
+
+# confines answers to yes / no
 def yes_no(question):
     valid = False
     while not valid:
@@ -17,9 +43,10 @@ def yes_no(question):
             return response
 
         else:
-            print("Plese input yes / no")
+            print("Please input yes / no")
 
 
+# checks rock, paper, or scissors
 def choice_checker(question, valid_list, error):
 
     valid = False
@@ -41,6 +68,7 @@ def choice_checker(question, valid_list, error):
         print()
 
 
+# checks rounds or infinite
 def check_rounds():
     while True:
         response = input("How many rounds: ")
@@ -61,7 +89,6 @@ def check_rounds():
 
         return response
 
-
 # Main routine goes here
 
 
@@ -70,15 +97,25 @@ rounds_drawn = 0
 rounds_played = 0
 
 # Lists of valid responses
+
 yes_no_list = ["yes", "no"]
 rps_list = ["rock", "paper", "scissors", "xxx"]
+game_summary = []
+
+# Asks user if they have played before.
+show_instructions = yes_no("Have you played my "
+                           "game before? ")
+
+# If 'no' show instructions
+if show_instructions == "no":
+    print()
+    instructions()
+
+print("program continues")
+print()
 
 # Ask user for # of rounds, <enter> for infinite mode
 rounds = check_rounds()
-
-# Asks user if they have played before.
-
-# If 'no' show instructions
 
 
 # ask user for # of rounds then loop
@@ -86,6 +123,7 @@ end_game = "no"
 while end_game == "no":
 
     # Rounds heading
+
     #Check if Continuous
 
     print()
@@ -141,6 +179,9 @@ while end_game == "no":
         result = "tied"
         rounds_drawn += 1
 
+    # add result to list
+    game_summary.append(result)
+
     #  End game if exit code is typed
 
     if choose == "xxx":
@@ -174,10 +215,29 @@ print()
 print("Thank you for playing")
 
 # Ask user if they want to see their game history
-History = yes_no("Do you want to see your history? ")
+history = yes_no("Do you want to see your history? ")
 # If 'yes' show history
-if History == "yes":
-    rounds_won = rounds_played - rounds_lost - rounds_drawn
+if history == "yes":
+
+    rounds_won = rounds_played - rounds_drawn - rounds_lost
+
+    # calculate game stats
+    percent_win = rounds_won / rounds_played * 100
+    percent_lose = rounds_lost / rounds_played * 100
+    percent_tie = rounds_drawn / rounds_played * 100
+
     print()
-elif History == "no":
+    print("***** Game History *****")
+    for game in game_summary:
+        print(game)
+
     print()
+
+    # displays game stats with % values to the nearest whole number
+    statement_generator("Game Statistics", "*")
+    print("Win: {}, ({:.0f}%)\nLoss: {}, "
+          "({:.0f}%)\nTie: {}, ({:.0f}%)".format(rounds_won, percent_win, rounds_lost,
+                                                 percent_lose, rounds_drawn, percent_tie))
+    print("Thank you for playing")
+elif history == "no":
+    print("Thank you for playing")

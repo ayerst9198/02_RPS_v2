@@ -9,7 +9,7 @@ for item in range (0, 5):
 
     outcome = "Round {}: {}".format(item, result)
 
-    if result == "lost":
+    if result == "lose":
         rounds_lost += 1
     elif result == "tie":
         rounds_drawn += 1
@@ -31,5 +31,7 @@ for game in game_summary:
 print()
 
 # displays game stats with % values to the nearest whole number
-print()
-print("Win: {}, ({:.0f}%)\nLoss: ")
+print("*** Game Statistics ***")
+print("Win: {}, ({:.0f}%)\nLoss: {}, "
+      "({:.0f}%)\nTie: {}, ({:.0f}%)".format(rounds_won, percent_win, rounds_lost,
+                                             percent_lose, rounds_drawn, percent_tie))
