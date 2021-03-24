@@ -113,6 +113,7 @@ def check_rounds():
 rounds_lost = 0
 rounds_drawn = 0
 rounds_played = 0
+result = "quitter"
 
 # Lists of valid responses
 
@@ -151,7 +152,7 @@ while end_game == "no":
         heading = statement_generator("Continuous Mode: Round {}".format(rounds_played + 1), "!", "!", "!", "!")
 
     elif rounds == "i":
-        heading = "Impossible Mode: Round {}".format(rounds_played + 1)
+        heading = statement_generator("Impossible Mode: Round {}".format(rounds_played + 1), "💀", "", "", "💀")
 
 
     else:
@@ -159,8 +160,8 @@ while end_game == "no":
         # End game if exit code is typed
         if rounds_played == "":
             end_game = "yes"
+            statement_generator(heading, "*", "*", "*", "*")
 
-    statement_generator(heading, "*", "*", "*", "*")
 
     choose_instruction = "Please choose rock (r), paper " \
                         "(p), or scissors (s): "
@@ -228,9 +229,11 @@ while end_game == "no":
         break
 
     if result == "tied":
-        feedback = "It's a tie "
+        feedback = "🎗🎗 It's a tie 🎗🎗"
+    elif result == "lose":
+        feedback = "You chose {} and com chose {} - ❌ you {} ❌".format(choose, comp_choice, result)
     else:
-        feedback = "You chose {} and com chose {} - you {}".format(choose, comp_choice, result)
+        feedback = "You chose {} and com chose {} - 🎉🎉🎉 you {} 🎉🎉🎉".format(choose, comp_choice, result)
 
 
     # rest of loop / game
@@ -257,26 +260,30 @@ print("Thank you for playing")
 history = yes_no("Do you want to see your history? ")
 # If 'yes' show history
 if history == "yes":
+    if result == "quitter":
+        print()
+        statement_generator("lol, you are a quitting loser", "😭", "", "", "😭")
 
-    rounds_won = rounds_played - rounds_drawn - rounds_lost
+    else:
+        rounds_won = rounds_played - rounds_drawn - rounds_lost
 
-    # calculate game stats
-    percent_win = rounds_won / rounds_played * 100
-    percent_lose = rounds_lost / rounds_played * 100
-    percent_tie = rounds_drawn / rounds_played * 100
+        # calculate game stats
+        percent_win = rounds_won / rounds_played * 100
+        percent_lose = rounds_lost / rounds_played * 100
+        percent_tie = rounds_drawn / rounds_played * 100
 
-    print()
-    statement_generator("***** Game History *****", "|", "*", "-", "|")
-    for game in game_summary:
-        print(game)
+        print()
+        statement_generator("***** Game History *****", "|", "*", "-", "|")
+        for game in game_summary:
+            print(game)
 
-    print()
+        print()
 
-    # displays game stats with % values to the nearest whole number
-    statement_generator("Game Statistics", "*", "?", "-", "*")
-    print("Win: {}, ({:.0f}%)\nLoss: {}, "
-          "({:.0f}%)\nTie: {}, ({:.0f}%)".format(rounds_won, percent_win, rounds_lost,
-                                                 percent_lose, rounds_drawn, percent_tie))
-    print("Thank you for playing")
-elif history == "no":
+        # displays game stats with % values to the nearest whole number
+        statement_generator("Game Statistics", "*", "?", "-", "*")
+        print("Win: {}, ({:.0f}%)\nLoss: {}, "
+              "({:.0f}%)\nTie: {}, ({:.0f}%)".format(rounds_won, percent_win, rounds_lost,
+                                                     percent_lose, rounds_drawn, percent_tie))
+        print("Thank you for playing")
+else:
     print("Thank you for playing")
