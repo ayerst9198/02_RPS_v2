@@ -2,29 +2,44 @@ import random
 # functions go here
 
 
-# makes statements look good
-def statement_generator(statement, side_decoration, top_bottom_decoration):
+# makes statements look good P.S. I MADE THIS CODE
+def statement_generator(statement, left_side_decoration, top_decoration, bottom_decoration, right_side_decoration):
 
-    sides = side_decoration * 3
+    left_sides = left_side_decoration * 3
 
-    statement = "{} {} {}".format(sides, statement, sides)
+    right_sides = right_side_decoration * 3
 
-    top_bottom = top_bottom_decoration * len(statement)
+    statement = "{} {} {}".format(left_sides, statement, right_sides)
 
+    top_bottom = top_decoration * len(statement)
+
+    bottom_bottom = bottom_decoration * len(statement)
 
     print(top_bottom)
     print(statement)
-    print(top_bottom)
+    print(bottom_bottom)
 
     return ""
 
 
 #  simplifies instructions
 def instructions():
-    statement_generator("How to play", "|", "?")
+    statement_generator("How to play", "*", "?", "?", "*")
     print()
-    print("The rules go here")
+    print("Choose either a number of rounds or press <enter> for")
+    print("  infinite mode, or i for infinite impossible mode")
     print()
+    print("Then for each round, choose from rock")
+    print("/ paper / scissors (or xxx to quit)")
+    print("You can type r / p / s / x if you")
+    print("don't want to type the entire word")
+    print()
+    print("The rules are...")
+    print("- Rock beats scissors")
+    print("- Scissors beats paper")
+    print("- Paper beats rock")
+    print()
+    statement_generator("Have fun", "^", "*", "-", "*")
     return ""
 
 
@@ -77,7 +92,10 @@ def check_rounds():
                       "or an integer that is more than 0"
         if response != "":
             try:
-                response = int(response)
+                if response == "i":
+                    return response
+                else:
+                    response = int(response)
 
                 if response < 1:
                     print(round_error)
@@ -102,6 +120,10 @@ yes_no_list = ["yes", "no"]
 rps_list = ["rock", "paper", "scissors", "xxx"]
 game_summary = []
 
+# welcome user
+statement_generator("Welcome to Rock Paper Scissors", "|", "^", "-", "|")
+print()
+
 # Asks user if they have played before.
 show_instructions = yes_no("Have you played my "
                            "game before? ")
@@ -110,8 +132,6 @@ show_instructions = yes_no("Have you played my "
 if show_instructions == "no":
     print()
     instructions()
-
-print("program continues")
 print()
 
 # Ask user for # of rounds, <enter> for infinite mode
@@ -124,11 +144,14 @@ while end_game == "no":
 
     # Rounds heading
 
-    #Check if Continuous
+    # Check if Continuous or impossible
 
     print()
     if rounds == "":
-        heading = "Continuous Mode: Round {}".format(rounds_played)
+        heading = statement_generator("Continuous Mode: Round {}".format(rounds_played + 1), "!", "!", "!", "!")
+
+    elif rounds == "i":
+        heading = "Impossible Mode: Round {}".format(rounds_played + 1)
 
 
     else:
@@ -137,7 +160,7 @@ while end_game == "no":
         if rounds_played == "":
             end_game = "yes"
 
-    print(heading)
+    statement_generator(heading, "*", "*", "*", "*")
 
     choose_instruction = "Please choose rock (r), paper " \
                         "(p), or scissors (s): "
@@ -154,30 +177,46 @@ while end_game == "no":
     comp_choice = random.choice(rps_list[:-1])
 
     # compare choices
-    if choose == "rock":
-        if comp_choice == "paper":
+    if rounds == "i":
+        if choose == "rock":
+            comp_choice = "paper"
             result = "lose"
             rounds_lost += 1
-        if comp_choice == "scissors":
-            result = "win"
-
-    if choose == "paper":
-        if comp_choice == "scissors":
-            result = "lose"
-            rounds_lost += 1
-        if comp_choice == "rock":
-            result = "win"
-
-    if choose == "scissors":
-        if comp_choice == "paper":
-            result = "win"
-        if comp_choice == "rock":
+        if choose == "paper":
+            comp_choice = "scissors"
             result = "lose"
             rounds_lost += 1
 
-    if choose == comp_choice:
-        result = "tied"
-        rounds_drawn += 1
+        if choose == "scissors":
+            comp_choice = "paper"
+            result = "lose"
+            rounds_lost += 1
+
+    else:
+        if choose == "rock":
+            if comp_choice == "paper":
+                result = "lose"
+                rounds_lost += 1
+            if comp_choice == "scissors":
+                result = "win"
+
+        if choose == "paper":
+            if comp_choice == "scissors":
+                result = "lose"
+                rounds_lost += 1
+            if comp_choice == "rock":
+                result = "win"
+
+        if choose == "scissors":
+            if comp_choice == "paper":
+                result = "win"
+            if comp_choice == "rock":
+                result = "lose"
+                rounds_lost += 1
+
+        if choose == comp_choice:
+            result = "tied"
+            rounds_drawn += 1
 
     # add result to list
     game_summary.append(result)
@@ -208,7 +247,7 @@ while end_game == "no":
 # Display Game Summary
 
 rounds_won = rounds_played - rounds_lost - rounds_drawn
-print("***** History *****")
+print("***** Summary *****")
 print("Won: {} \t|\t Lost: {} \t|\t Draw: "
       "{}".format(rounds_won, rounds_lost, rounds_drawn))
 print()
@@ -227,14 +266,14 @@ if history == "yes":
     percent_tie = rounds_drawn / rounds_played * 100
 
     print()
-    print("***** Game History *****")
+    statement_generator("***** Game History *****", "|", "*", "-", "|")
     for game in game_summary:
         print(game)
 
     print()
 
     # displays game stats with % values to the nearest whole number
-    statement_generator("Game Statistics", "*")
+    statement_generator("Game Statistics", "*", "?", "-", "*")
     print("Win: {}, ({:.0f}%)\nLoss: {}, "
           "({:.0f}%)\nTie: {}, ({:.0f}%)".format(rounds_won, percent_win, rounds_lost,
                                                  percent_lose, rounds_drawn, percent_tie))
